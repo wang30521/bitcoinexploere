@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wp.bitcoinexploere.dao.TransactionDetailMapper">
+  <resultMap id="BaseResultMap" type="com.wp.bitcoinexploere.po.TransactionDetail">
+    <id column="tx_id" jdbcType="CHAR" property="txId" />
+    <id column="ts_address" jdbcType="VARCHAR" property="tsAddress" />
+    <result column="ts_type" jdbcType="TINYINT" property="tsType" />
+    <result column="ts_amount" jdbcType="BIGINT" property="tsAmount" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    tx_id, ts_address, ts_type, ts_amount
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="com.wp.bitcoinexploere.po.TransactionDetailKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from transaction_detail
+    where tx_id = #{txId,jdbcType=CHAR}
+      and ts_address = #{tsAddress,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.wp.bitcoinexploere.po.TransactionDetailKey">
+    delete from transaction_detail
+    where tx_id = #{txId,jdbcType=CHAR}
+      and ts_address = #{tsAddress,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.wp.bitcoinexploere.po.TransactionDetail">
+    insert into transaction_detail (tx_id, ts_address, ts_type, 
+      ts_amount)
+    values (#{txId,jdbcType=CHAR}, #{tsAddress,jdbcType=VARCHAR}, #{tsType,jdbcType=TINYINT}, 
+      #{tsAmount,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wp.bitcoinexploere.po.TransactionDetail">
+    insert into transaction_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="txId != null">
+        tx_id,
+      </if>
+      <if test="tsAddress != null">
+        ts_address,
+      </if>
+      <if test="tsType != null">
+        ts_type,
+      </if>
+      <if test="tsAmount != null">
+        ts_amount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="txId != null">
+        #{txId,jdbcType=CHAR},
+      </if>
+      <if test="tsAddress != null">
+        #{tsAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="tsType != null">
+        #{tsType,jdbcType=TINYINT},
+      </if>
+      <if test="tsAmount != null">
+        #{tsAmount,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wp.bitcoinexploere.po.TransactionDetail">
+    update transaction_detail
+    <set>
+      <if test="tsType != null">
+        ts_type = #{tsType,jdbcType=TINYINT},
+      </if>
+      <if test="tsAmount != null">
+        ts_amount = #{tsAmount,jdbcType=BIGINT},
+      </if>
+    </set>
+    where tx_id = #{txId,jdbcType=CHAR}
+      and ts_address = #{tsAddress,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wp.bitcoinexploere.po.TransactionDetail">
+    update transaction_detail
+    set ts_type = #{tsType,jdbcType=TINYINT},
+      ts_amount = #{tsAmount,jdbcType=BIGINT}
+    where tx_id = #{txId,jdbcType=CHAR}
+      and ts_address = #{tsAddress,jdbcType=VARCHAR}
+  </update>
+</mapper>
