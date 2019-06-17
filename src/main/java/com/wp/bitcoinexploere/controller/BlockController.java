@@ -1,7 +1,11 @@
 package com.wp.bitcoinexploere.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.wp.bitcoinexploere.api.BitcoinJsonRpcApi;
+import com.wp.bitcoinexploere.api.BitcoinRestApi;
 import com.wp.bitcoinexploere.dto.BlockGetDTO;
 import com.wp.bitcoinexploere.dto.BlockListDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,11 +19,17 @@ import java.util.List;
 @RequestMapping("/block")
 public class BlockController {
 
+    @Autowired
+    private BitcoinRestApi bitcoinRestApi;
+
+    @Autowired
+    private BitcoinJsonRpcApi bitcoinJsonRpcApi;
+
     @GetMapping("/getRecentBlocks")
-    public List<BlockListDTO> getRecentBlocks(){
+    public List<BlockListDTO> getRecentBlocks() throws Throwable {
         ArrayList<BlockListDTO> blockListDTOS = new ArrayList<>();
 
-        BlockListDTO blockListDTO = new BlockListDTO();
+        /*BlockListDTO blockListDTO = new BlockListDTO();
         blockListDTO.setBlockHash("00000000000000000024b3d4793dcbba032d3fc28a0d77a37d466b956fb68aa5");
         blockListDTO.setBlockHeight(580644);
         blockListDTO.setBlockTime(new Date());
@@ -33,7 +43,31 @@ public class BlockController {
         blockListDTO2.setBlockTime(new Date());
         blockListDTO2.setBlockSizeOnDisk((long) 2702);
         blockListDTO2.setBlockSize(1322496);
-        blockListDTOS.add(blockListDTO2);
+        blockListDTOS.add(blockListDTO2);*/
+
+        JSONObject blockChainInfo = bitcoinRestApi.getBlockChainInfo();
+        Integer blockHeight = blockChainInfo.getInteger("blocks");
+        Integer blockFromHeight = blockHeight-5;
+
+        String blockhash = bitcoinJsonRpcApi.getBlockhashByHeight(blockFromHeight);
+
+        List<JSONObject> blockHeaders = bitcoinRestApi.getBlockHeaders(blockhash, 5);
+
+        for(Object blockHeader:blockHeaders){
+            JSONObject jsonObject = (JSONObject)blockHeader;
+            BlockListDTO blockListDTO = new BlockListDTO();
+            blockListDTO.setBlockHash(jsonObject.getString("hash"));
+            blockListDTO.setBlockHeight(jsonObject.getInteger("height"));
+            Long time = jsonObject.getLong("time");
+            blockListDTO.setBlockTime(new Date(1000*time));
+            blockListDTO.setBlockSizeOnDisk(jsonObject.getLong("nTx"));
+            //todo
+            blockListDTO.setBlockSize(null);
+            blockListDTOS.add(blockListDTO);
+
+
+        }
+
 
         return blockListDTOS;
     }
