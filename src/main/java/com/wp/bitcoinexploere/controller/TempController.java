@@ -20,8 +20,8 @@ public class TempController {
 
     @GetMapping("/test")
     public String test(){
-       // JSONObject blockChainInfo = bitcoinRestApi.getBlockChainInfo();
-        //        JSONObject blockNoTxDetails = bitcoinRestApi.getBlockNoTxDetails("00000000000ed3139372c0b8449f0fb1778b128f247546a551316edf5e531fb7");
+        //JSONObject blockChainInfo = bitcoinRestApi.getBlockChainInfo();
+      //  JSONObject blockNoTxDetails = bitcoinRestApi.getBlockNoTxDetails("00000000000ed3139372c0b8449f0fb1778b128f247546a551316edf5e531fb7");
 
         //        JSONObject blockchainInfo = bitcoinJsonRpcApi.getBlockchainInfo();
         //         JSONObject block = bitcoinJsonRpcApi.getBlockByHash("000000000000025f54e531a47239f394e6a7f07af3b9761f279cb86c5884d763");
@@ -31,5 +31,6 @@ public class TempController {
         JSONObject utxoCheckMempool = bitcoinRestApi.getUTXOCheckMempool("0b9a0ea6c034834e79db101967985e1b0d6358cad111444ff52075106acba8d6", 0);
 
         return null;
+       // return blockChainInfo.toJSONString();
     }
 }

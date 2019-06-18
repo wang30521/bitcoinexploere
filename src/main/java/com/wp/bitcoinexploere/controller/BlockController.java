@@ -29,7 +29,7 @@ public class BlockController {
     public List<BlockListDTO> getRecentBlocks() throws Throwable {
         ArrayList<BlockListDTO> blockListDTOS = new ArrayList<>();
 
-        /*BlockListDTO blockListDTO = new BlockListDTO();
+       /* BlockListDTO blockListDTO = new BlockListDTO();
         blockListDTO.setBlockHash("00000000000000000024b3d4793dcbba032d3fc28a0d77a37d466b956fb68aa5");
         blockListDTO.setBlockHeight(580644);
         blockListDTO.setBlockTime(new Date());
@@ -45,13 +45,13 @@ public class BlockController {
         blockListDTO2.setBlockSize(1322496);
         blockListDTOS.add(blockListDTO2);*/
 
-        JSONObject blockChainInfo = bitcoinRestApi.getBlockChainInfo();
+       JSONObject blockChainInfo = bitcoinRestApi.getBlockChainInfo();
         Integer blockHeight = blockChainInfo.getInteger("blocks");
         Integer blockFromHeight = blockHeight-5;
 
         String blockhash = bitcoinJsonRpcApi.getBlockhashByHeight(blockFromHeight);
 
-        List<JSONObject> blockHeaders = bitcoinRestApi.getBlockHeaders(blockhash, 5);
+        List<JSONObject> blockHeaders = bitcoinRestApi.getBlockHeaders( 5,blockhash);
 
         for(Object blockHeader:blockHeaders){
             JSONObject jsonObject = (JSONObject)blockHeader;

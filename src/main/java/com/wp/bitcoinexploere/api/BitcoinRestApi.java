@@ -15,26 +15,28 @@ public interface BitcoinRestApi {
     JSONObject getBlockChainInfo();
 
     @GetMapping("/rest/block/notxdetails/{blockhash}.json")
-    JSONObject getBlockNoTxDetails(@PathVariable String blockhash);
+    JSONObject getBlockNoTxDetails(@PathVariable(value="blockHash") String blockhash);
 
     @GetMapping("/rest/tx/{txHash}.json")
-    JSONObject getTransaction(@PathVariable("txHash") String txHash);
+    JSONObject getTransaction(@PathVariable(value="txHash") String txHash);
 
     @GetMapping("/rest/block/{blockHash}.json")
     JSONObject getBlock(@PathVariable("blockHash") String blockHash);
 
-    @GetMapping("/rest/getutxos/{txid}-{n}.json")
-    JSONObject getUTXO(@PathVariable String txid, @PathVariable Integer n);
-
-    @GetMapping("/rest/getutxos/checkmempool/{txid}-{n}.json")
-    JSONObject getUTXOCheckMempool(@PathVariable String txid, @PathVariable Integer n);
-
     @GetMapping("/rest/headers/{count}/{blockhash}.json")
-    List<JSONObject> getBlockHeaders(@PathVariable String blockhash, @PathVariable Integer count);
+    List<JSONObject> getBlockHeaders(@PathVariable("count") Integer count, @PathVariable("blockhash") String blockhash);
 
     @GetMapping("/rest/mempool/info.json")
     JSONObject getMempoolInfo();
 
     @GetMapping("/rest/mempool/contents.json")
     JSONObject getMempoolContents();
+
+    @GetMapping("/rest/getutxos/{txid}-{n}.json")
+    JSONObject getUTXO(@PathVariable("txid") String txid, @PathVariable("n") Integer n);
+
+    @GetMapping("/rest/getutxos/checkmempool/{txid}-{n}.json")
+    JSONObject getUTXOCheckMempool(@PathVariable("txid") String txid, @PathVariable("n") Integer n);
+
+
 }
