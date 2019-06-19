@@ -5,6 +5,7 @@ import com.wp.bitcoinexploere.api.BitcoinJsonRpcApi;
 import com.wp.bitcoinexploere.api.BitcoinRestApi;
 import com.wp.bitcoinexploere.dto.BlockGetDTO;
 import com.wp.bitcoinexploere.dto.BlockListDTO;
+import com.wp.bitcoinexploere.service.BlockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,9 +26,12 @@ public class BlockController {
     @Autowired
     private BitcoinJsonRpcApi bitcoinJsonRpcApi;
 
+    @Autowired
+    private BlockService blockService;
+
     @GetMapping("/getRecentBlocks")
     public List<BlockListDTO> getRecentBlocks() throws Throwable {
-        ArrayList<BlockListDTO> blockListDTOS = new ArrayList<>();
+
 
        /* BlockListDTO blockListDTO = new BlockListDTO();
         blockListDTO.setBlockHash("00000000000000000024b3d4793dcbba032d3fc28a0d77a37d466b956fb68aa5");
@@ -35,41 +39,19 @@ public class BlockController {
         blockListDTO.setBlockTime(new Date());
         blockListDTO.setBlockSizeOnDisk((long) 2390);
         blockListDTO.setBlockSize(1257767);
-        blockListDTOS.add(blockListDTO);
+        blockListDTOS.add(blockListDTO);*/
 
-        BlockListDTO blockListDTO2 = new BlockListDTO();
-        blockListDTO2.setBlockHash("00000000000000000001ce5f88601a311f1c73c0073a15fe4e5956da7fbcd78b");
-        blockListDTO2.setBlockHeight(580643);
-        blockListDTO2.setBlockTime(new Date());
-        blockListDTO2.setBlockSizeOnDisk((long) 2702);
-        blockListDTO2.setBlockSize(1322496);
-        blockListDTOS.add(blockListDTO2);*/
-
-       JSONObject blockChainInfo = bitcoinRestApi.getBlockChainInfo();
+     /*  JSONObject blockChainInfo = bitcoinRestApi.getBlockChainInfo();
         Integer blockHeight = blockChainInfo.getInteger("blocks");
         Integer blockFromHeight = blockHeight-5;
 
         String blockhash = bitcoinJsonRpcApi.getBlockhashByHeight(blockFromHeight);
 
-        List<JSONObject> blockHeaders = bitcoinRestApi.getBlockHeaders( 5,blockhash);
+        List<JSONObject> blockHeaders = bitcoinRestApi.getBlockHeaders( 5,blockhash);*/
 
-        for(Object blockHeader:blockHeaders){
-            JSONObject jsonObject = (JSONObject)blockHeader;
-            BlockListDTO blockListDTO = new BlockListDTO();
-            blockListDTO.setBlockHash(jsonObject.getString("hash"));
-            blockListDTO.setBlockHeight(jsonObject.getInteger("height"));
-            Long time = jsonObject.getLong("time");
-            blockListDTO.setBlockTime(new Date(1000*time));
-            blockListDTO.setBlockSizeOnDisk(jsonObject.getLong("nTx"));
-            //todo
-            blockListDTO.setBlockSize(null);
-            blockListDTOS.add(blockListDTO);
+        List<BlockListDTO> recentBlocks = blockService.getRecentBlocks()
 
-
-        }
-
-
-        return blockListDTOS;
+        return recentBlocks;
     }
 
     @GetMapping("/getByBlockhash")

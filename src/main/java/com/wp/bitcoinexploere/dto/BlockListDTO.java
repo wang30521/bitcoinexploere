@@ -9,7 +9,7 @@ public class BlockListDTO implements Serializable {
 
     private Integer blockHeight;
 
-    private Date blockTime;
+    private Long blockTime;
 
     private Integer blockSize;
 
@@ -31,11 +31,11 @@ public class BlockListDTO implements Serializable {
         this.blockHeight = blockHeight;
     }
 
-    public Date getBlockTime() {
+    public Long getBlockTime() {
         return blockTime;
     }
 
-    public void setBlockTime(Date blockTime) {
+    public void setBlockTime(Long blockTime) {
         this.blockTime = blockTime;
     }
 
