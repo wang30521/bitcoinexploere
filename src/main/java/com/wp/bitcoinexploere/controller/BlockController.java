@@ -49,7 +49,7 @@ public class BlockController {
 
         List<JSONObject> blockHeaders = bitcoinRestApi.getBlockHeaders( 5,blockhash);*/
 
-        List<BlockListDTO> recentBlocks = blockService.getRecentBlocks()
+        List<BlockListDTO> recentBlocks = blockService.getRecentBlocks();
 
         return recentBlocks;
     }
