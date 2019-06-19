@@ -80,12 +80,33 @@ public class BitcoinServiceImpl implements BitcoinService {
         tx.setTxHash(txJson.getString("txid"));
         tx.setBlockHash(blockhash);
         tx.setTxTime(time);
+        //todo set tx detail
         //todo set tx amount
         tx.setTxSize(txJson.getLong("size"));
         tx.setTxWeight(txJson.getInteger("weight"));
         //todo set tx confirmations
         transactionMapper.insert(tx);
 
+
+    }
+
+    @Override
+    public void syncTxDetail(JSONObject txJson) {
+        JSONArray vout = txJson.getJSONArray("vout");
+        syncTxDetailVout(vout);
+        JSONArray vin = txJson.getJSONArray("vin");
+        syncTxDetailVin(vin);
+    }
+
+    @Override
+    public void syncTxDetailVout(JSONArray vouts) {
+        for(Object voutObj :vouts){
+            JSONObject jsonObject = new JSONObject((LinkedHashMap) voutObj);
+        }
+    }
+
+    @Override
+    public void syncTxDetailVin(JSONArray vins) {
 
     }
 }
